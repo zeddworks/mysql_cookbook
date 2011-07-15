@@ -31,3 +31,7 @@ package "mysql-dev" do
   )
 end
 
+service "mysqld" do
+  supports :restart => true, :reload => true, :status => true
+  action [ :enable, :start ]
+end
