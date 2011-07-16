@@ -6,13 +6,13 @@ action :create do
     execute "create-mysql-user-#{user}" do
       user "mysql"
       command "mysql -u root -e \"CREATE USER '#{user}'@'#{host}';\""
-      not_if "sudo -u mysql bash -c \"mysql -e 'SELECT user FROM mysql.user;'\" | grep #{user}"
+      not_if "sudo -u mysql bash -c \"mysql -u root -e 'SELECT user FROM mysql.user;'\" | grep #{user}"
     end
   else
     execute "create-mysql-user-#{user}" do
       user "mysql"
       command "mysql -u root -e \"CREATE USER '#{user}'@'#{host}' IDENTIFIED by '#{password}' ;\""
-      not_if "sudo -u mysql bash -c \"mysql -e 'SELECT user FROM mysql.user;'\" | grep #{user}"
+      not_if "sudo -u mysql bash -c \"mysql -u root -e 'SELECT user FROM mysql.user;'\" | grep #{user}"
     end
   end
 end
@@ -22,6 +22,6 @@ action :drop do
   execute "drop-mysql-user-#{user}" do
     user "mysql"
     command "mysql -u root -e \"DROP USER '#{user}'@'#{host}';\""
-    only_if "sudo -u mysql bash -c \"mysql -e 'SELECT user FROM mysql.user;'\" | grep #{user}"
+    only_if "sudo -u mysql bash -c \"mysql -u root -e 'SELECT user FROM mysql.user;'\" | grep #{user}"
   end
 end

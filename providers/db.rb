@@ -12,7 +12,7 @@ action :create do
     execute "create-mysql-db-#{database}" do
       user "mysql"
       command "mysql -u root -e \"CREATE DATABASE #{database} CHARACTER SET utf8; GRANT ALL ON #{database}.* TO '#{owner}'@'#{host}';\""
-      not_if "sudo -u mysql bash -c \"mysql -e 'SHOW DATABASES'\" | grep #{database}"
+      not_if "sudo -u mysql bash -c \"mysql -u root -e 'SHOW DATABASES'\" | grep #{database}"
     end
   end
 end
@@ -22,6 +22,6 @@ action :drop do
   execute "drop-mysql-db-#{database}" do
     user "mysql"
     command "mysql -u root -e \"DROP DATABASE #{database};\""
-    only_if "sudo -u mysql bash -c \"mysql -e 'SHOW DATABASES'\" | grep #{database}"
+    only_if "sudo -u mysql bash -c \"mysql -u root -e 'SHOW DATABASES'\" | grep #{database}"
   end
 end
