@@ -31,7 +31,14 @@ package "mysql-dev" do
   )
 end
 
-service "mysqld" do
-  supports :restart => true, :reload => true, :status => true
-  action [ :enable, :start ]
+if platform? "redhat"
+  service "mysqld" do
+    supports :restart => true, :reload => true, :status => true
+    action [ :enable, :start ]
+  end
+else
+  service "mysql" do
+    supports :restart => true, :reload => true, :status => true
+    action [ :enable, :start ]
+  end
 end
